@@ -414,9 +414,9 @@ static int __init cpu_input_boost_init(void)
 	struct task_struct *thread;
 	int ret;
 
-	_lp_mask.bits[0] = CONFIG_LITTLE_CPU_MASK;
-	_perf_mask.bits[0] = CONFIG_BIG_CPU_MASK;
-	_prime_mask.bits[0] = CONFIG_PRIME_CPU_MASK;
+	_lp_mask.bits[0] = 15;
+	_perf_mask.bits[0] = 112;
+	_prime_mask.bits[0] = 128;
 
 	cpu_input_boost_input_handler.private = b;
 	ret = input_register_handler(&cpu_input_boost_input_handler);
