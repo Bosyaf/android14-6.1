@@ -18,7 +18,12 @@
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0)
 #include <uapi/linux/sched/types.h>
 #endif
-
+static cpumask_t _lp_mask;
+static cpumask_t _perf_mask;
+static cpumask_t _prime_mask;
+#define cpu_lp_mask (&_lp_mask)
+#define cpu_perf_mask (&_perf_mask)
+#define cpu_prime_mask (&_prime_mask)
 static unsigned int input_boost_freq_little __read_mostly =
 	CONFIG_INPUT_BOOST_FREQ_LP;
 static unsigned int input_boost_freq_big __read_mostly =
@@ -408,6 +413,10 @@ static int __init cpu_input_boost_init(void)
 	struct boost_drv *b = &boost_drv_g;
 	struct task_struct *thread;
 	int ret;
+
+	_lp_mask.bits[0] = CONFIG_LITTLE_CPU_MASK;
+	_perf_mask.bits[0] = CONFIG_BIG_CPU_MASK;
+	_prime_mask.bits[0] = CONFIG_PRIME_CPU_MASK;
 
 	cpu_input_boost_input_handler.private = b;
 	ret = input_register_handler(&cpu_input_boost_input_handler);
